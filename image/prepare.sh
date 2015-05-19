@@ -15,8 +15,7 @@ echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" >> /etc/
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 # Accepting Oracle JDK License
 cat <<-EOF | debconf-set-selections
-debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
-debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
+debconf shared/accepted-oracle-license-v1-1 select true
 EOF
 
 # Update repos

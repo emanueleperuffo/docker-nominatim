@@ -1,4 +1,4 @@
-FROM emanueleperuffo/baseimage-debian:latest
+FROM emanueleperuffo/oracle-java-8:latest
 MAINTAINER Emanuele Peruffo <info@emanueleperuffo.com>
 
 ENV HOME /root

@@ -1,0 +1,47 @@
+#!/bin/bash
+set -e
+
+if [ "${OSM_FILE_URL}" == '-' ]; then
+	# Reading from stdin
+	OSM_FILE_TMPNAME=`mktemp`
+	# I hope the OS buffers properly
+	cat > ${OSM_FILE_TMPNAME}
+else
+	# Downloading
+	TEMP_FOLDER=`gosu mktemp -d`
+	OSM_FILE_TMPNAME=${TEMP_FOLDER}/`basename ${OSM_FILE_URL}`
+	gosu curl ${OSM_FILE_URL} -o ${OSM_FILE_TMPNAME}
+fi
+
+# First Import
+gosu nominatim /home/nominatim/Nominatim-${NOMINATIM_VERSION}/utils/setup.php --osm-file ${OSM_FILE_TMPNAME} --all --osm2pgsql-cache ${NOMINATIM_SETUP_CACHE} 2>&1 logger -t nominatim-setup
+
+if [ "${SPECIALPHRASES_COUNTRIES}" != 'false' ]; then
+	SQL_FILENAME=`gosu nominatim mktemp`
+	gosu nominatim /home/nominatim/Nominatim-${NOMINATIM_VERSION}/utils/specialphrases.php --countries > ${SQL_FILENAME}
+	gosu nominatim psql -d nominatim -f ${SQL_FILENAME}
+	rm ${SQL_FILENAME}
+fi
+
+if [ "${SPECIALPHRASES_WIKI}" != 'false' ]; then
+	SQL_FILENAME=`gosu nominatim mktemp`
+	gosu nominatim /home/nominatim/Nominatim-${NOMINATIM_VERSION}/utils/specialphrases.php --wiki-import > ${SQL_FILENAME}
+	gosu nominatim psql -d nominatim -f ${SQL_FILENAME}
+	rm ${SQL_FILENAME}
+fi
+
+mkdir -m 755 /var/www/nominatim
+chown www-data:www-data /var/www/nominatim
+gosu www-data /home/nominatim/Nominatim-${NOMINATIM_VERSION}/utils/setup.php --create-website /var/www/nominatim
+
+if [ "${NGINX_HTTP}" == "true" ]; then
+	cp /build/config/nginx/sites-available/nominatim.conf /etc/nginx/sites-available/
+	ln -s /etc/nginx/sites-available/nominatim.conf /etc/nginx/sites-enabled/nominatim.conf
+fi
+
+if [ "${NGINX_HTTPS}" == "true" ]; then
+	cp /build/config/nginx/sites-available/nominatim-ssl.conf /etc/nginx/sites-available/
+	ln -s /etc/nginx/sites-available/nominatim-ssl.conf /etc/nginx/sites-enabled/nominatim-ssl.conf
+fi
+
+cp /build/config/nginx/sites-available

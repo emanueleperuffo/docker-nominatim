@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
-# environment variables are not passed to this shell automatically probably
-source /etc/container_environment.sh
-
 if [ "${OSM_FILE}" == '-' ]; then
 	# Reading from stdin
 	OSM_FILE_TMPNAME=`mktemp`

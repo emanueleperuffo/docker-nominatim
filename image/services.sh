@@ -36,8 +36,6 @@ cd $HOME
 
 ## Copying custom configuration
 gosu nominatim cp /build/config/nominatim/settings/local.php /home/nominatim/Nominatim-${NOMINATIM_VERSION}/settings/
-# Allowing php-fpm to read enviromnent variables
-sed -i 's/;clear_env = no/clear_env = no/' /etc/php5/fpm/pool.d/www.conf
 
 ## Installing osmconverter, osmupdate and osmfilter
 $minimal_apt_get_install wget osmctools

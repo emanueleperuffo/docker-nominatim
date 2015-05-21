@@ -35,13 +35,17 @@ chown www-data:www-data /var/www/nominatim
 gosu www-data /home/nominatim/Nominatim-${NOMINATIM_VERSION}/utils/setup.php --create-website /var/www/nominatim
 
 if [ "${NGINX_HTTP}" == "true" ]; then
-	cp /build/config/nginx/sites-available/nominatim.conf /etc/nginx/sites-available/
 	ln -s /etc/nginx/sites-available/nominatim.conf /etc/nginx/sites-enabled/nominatim.conf
+else
+	if [ -f /etc/nginx/sites-enabled/nominatim.conf ]; then
+		rm /etc/nginx/sites-enabled/nominatim.conf
+	fi
 fi
 
 if [ "${NGINX_HTTPS}" == "true" ]; then
-	cp /build/config/nginx/sites-available/nominatim-ssl.conf /etc/nginx/sites-available/
 	ln -s /etc/nginx/sites-available/nominatim-ssl.conf /etc/nginx/sites-enabled/nominatim-ssl.conf
+else
+	if [ -f /etc/nginx/sites-enabled/nominatim-ssl.conf ]; then
+		rm /etc/nginx/sites-enabled/nominatim.conf
+	fi
 fi
-
-cp /build/config/nginx/sites-available

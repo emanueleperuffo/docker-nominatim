@@ -8,6 +8,9 @@ $minimal_apt_get_install nginx-full
 mkdir /etc/service/nginx
 cp /build/runit/nginx /etc/service/nginx/run
 
+# Creating websites
+cp /build/config/nginx/sites-available/* /etc/nginx/sites-available/*
+
 ## Installing Nominatim requirements
 $minimal_apt_get_install \
 	build-essential libxml2-dev libgeos-dev libpq-dev libbz2-dev libtool automake libproj-dev \

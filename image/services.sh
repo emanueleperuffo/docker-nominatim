@@ -9,7 +9,7 @@ mkdir /etc/service/nginx
 cp /build/runit/nginx /etc/service/nginx/run
 
 # Creating websites
-cp /build/config/nginx/sites-available/* /etc/nginx/sites-available/*
+cp /build/config/nginx/sites-available/* /etc/nginx/sites-available/
 
 ## Installing Nominatim requirements
 $minimal_apt_get_install \

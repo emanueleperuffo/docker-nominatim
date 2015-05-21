@@ -8,13 +8,13 @@ if [ "${OSM_FILE}" == '-' ]; then
 	cat > ${OSM_FILE_TMPNAME}
 else
 	# Downloading
-	TEMP_FOLDER=`gosu mktemp -d`
+	TEMP_FOLDER=`gosu nominatim mktemp -d`
 	OSM_FILE_TMPNAME=${TEMP_FOLDER}/`basename ${OSM_FILE}`
-	gosu curl ${OSM_FILE} -o ${OSM_FILE_TMPNAME}
+	gosu nominatim curl ${OSM_FILE} -o ${OSM_FILE_TMPNAME}
 fi
 
 # First Import
-gosu nominatim /home/nominatim/Nominatim-${NOMINATIM_VERSION}/utils/setup.php --osm-file ${OSM_FILE_TMPNAME} --all --osm2pgsql-cache ${NOMINATIM_SETUP_CACHE} 2>&1 logger -t nominatim-setup
+gosu nominatim /home/nominatim/Nominatim-${NOMINATIM_VERSION}/utils/setup.php --osm-file ${OSM_FILE_TMPNAME} --all --osm2pgsql-cache ${NOMINATIM_SETUP_CACHE} 2>&1 | logger -t nominatim-setup
 
 if [ "${SPECIALPHRASES_COUNTRIES}" != 'false' ]; then
 	SQL_FILENAME=`gosu nominatim mktemp`

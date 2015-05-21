@@ -31,8 +31,14 @@ gosu nominatim ./configure
 gosu nominatim make
 cd $HOME
 
+## Copying custom configuration
+gosu nominatim cp /build/configu/nominatim/local.php /home/nominatim/Nominatim-${NOMINATIM_VERSION}/settings/
+
 ## Installing osmconverter, osmupdate and osmfilter
 $minimal_apt_get_install wget osmctools
+
+## Copy the syslog script
+cp /build/config/syslog-ng/conf.d/* /etc/syslog-ng/conf.d/
 
 ## Copy the binaries
 cp /build/bin/* /usr/bin/

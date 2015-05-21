@@ -5,9 +5,9 @@ if [ -d /var/www/html ]; then
 	rm -rf /var/www/html
 fi
 
-DB_EXISTS=`psql -lqt | cut -d -| -f 1 | grep -w nominatim | wc -l`
+DB_EXISTS=`psql -lqt | cut -d'|' -f1 | sed 's/\s//' | grep -w nominatim | wc -l`
 
-if [ "${DB_EXISTS}" != "1" ]; then
+if [ "${DB_EXISTS}" == "0" ]; then
 	nominatim-setup
 fi
 

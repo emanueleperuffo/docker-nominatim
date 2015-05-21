@@ -1,4 +1,4 @@
-FROM emanueleperuffo/oracle-java-8:latest
+FROM emanueleperuffo/baseimage-debian
 MAINTAINER Emanuele Peruffo <info@emanueleperuffo.com>
 
 ENV HOME /root
@@ -15,7 +15,7 @@ ENV NOMINATIM_WEBSITE_DOMAIN www.example.com
 ENV NOMINATIM_SETUP_CACHE 1024
 ENV SPECIALPHRASES_COUNTRIES false
 ENV SPECIALPHRASES_WIKI false
-ENV OSM_FILE_URL http://www.example.com/xxx.pbf
+ENV OSM_FILE http://www.example.com/xxx.pbf
 ENV NGINX_HTTP true
 ENV NGINX_HTTPS false
 

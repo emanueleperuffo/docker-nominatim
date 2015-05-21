@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-if [ "${OSM_FILE_URL}" == '-' ]; then
+if [ "${OSM_FILE}" == '-' ]; then
 	# Reading from stdin
 	OSM_FILE_TMPNAME=`mktemp`
 	# I hope the OS buffers properly
@@ -9,8 +9,8 @@ if [ "${OSM_FILE_URL}" == '-' ]; then
 else
 	# Downloading
 	TEMP_FOLDER=`gosu mktemp -d`
-	OSM_FILE_TMPNAME=${TEMP_FOLDER}/`basename ${OSM_FILE_URL}`
-	gosu curl ${OSM_FILE_URL} -o ${OSM_FILE_TMPNAME}
+	OSM_FILE_TMPNAME=${TEMP_FOLDER}/`basename ${OSM_FILE}`
+	gosu curl ${OSM_FILE} -o ${OSM_FILE_TMPNAME}
 fi
 
 # First Import

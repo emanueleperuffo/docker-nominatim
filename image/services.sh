@@ -12,7 +12,7 @@ cp /build/runit/nginx /etc/service/nginx/run
 $minimal_apt_get_install \
 	build-essential libxml2-dev libgeos-dev libpq-dev libbz2-dev libtool automake libproj-dev \
 	libboost-dev libboost-system-dev libboost-filesystem-dev libboost-thread-dev \
-	gcc proj-bin libgeos-c1 osmosis libgeos++-dev \
+	gcc proj-bin libgeos-c1 libgeos++-dev \
 	php5-fpm php5 php-pear php5-pgsql php5-json php-db \
 	postgresql-client-${PG_MAJOR} postgresql-server-dev-${PG_MAJOR} \
 	libprotobuf-c0-dev protobuf-c-compiler

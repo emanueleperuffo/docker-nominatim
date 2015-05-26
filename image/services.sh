@@ -20,28 +20,23 @@ $minimal_apt_get_install \
 	postgresql-client-${PG_MAJOR} postgresql-server-dev-${PG_MAJOR} \
 	libprotobuf-c0-dev protobuf-c-compiler
 
+# Creating nominatim user
+groupadd nominatim && useradd -g nominatim nominatim
+mkdir /var/nominatim
+
 ## Downloading and extracting Nominatim
-groupadd nominatim && useradd -g nominatim nominatim -d /home/nominatim
-mkdir /home/nominatim
-chown nominatim:nominatim /home/nominatim
 curl -O -SL "http://www.nominatim.org/release/Nominatim-${NOMINATIM_VERSION}.tar.bz2"
-gosu nominatim tar -xvjf Nominatim-${NOMINATIM_VERSION}.tar.bz2 -C /home/nominatim
-rm Nominatim-${NOMINATIM_VERSION}.tar.bz2
+tar -xvjf Nominatim-${NOMINATIM_VERSION}.tar.bz2 && rm Nominatim-${NOMINATIM_VERSION}.tar.bz2
+mv Nominatim-${NOMINATIM_VERSION} /var/nominatim && chown -R nominatim:nominatim /var/nominatim
 
 ## Compiling Nominatim
-cd /home/nominatim/Nominatim-${NOMINATIM_VERSION}
+cd /var/nominatim
 gosu nominatim ./configure
 gosu nominatim make
 cd $HOME
 
-## Copying custom configuration
-gosu nominatim cp /build/config/nominatim/settings/local.php /home/nominatim/Nominatim-${NOMINATIM_VERSION}/settings/
-
 ## Installing osmconverter, osmupdate and osmfilter
 $minimal_apt_get_install wget osmctools
 
-## Copy the syslog script
-cp /build/config/syslog-ng/conf.d/* /etc/syslog-ng/conf.d/
-
 ## Copy the binaries
-cp /build/bin/* /usr/bin/
+cp /build/bin/* /usr/local/bin/

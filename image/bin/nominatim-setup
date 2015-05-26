@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-if [ "${OSM_FILE}" == '-' ]; then
+if [[ "$OSM_FILE" == '-' ]]; then
 	# Reading from stdin
 	OSM_FILE_TMPNAME=`mktemp`
 	# I hope the OS buffers properly
@@ -14,27 +14,27 @@ else
 fi
 
 # First Import
-gosu nominatim /home/nominatim/Nominatim-${NOMINATIM_VERSION}/utils/setup.php --osm-file ${OSM_FILE_TMPNAME} --all --osm2pgsql-cache ${NOMINATIM_SETUP_CACHE} 2>&1 | logger -t nominatim-setup
+gosu nominatim /var/nominatim/utils/setup.php --osm-file ${OSM_FILE_TMPNAME} --all --osm2pgsql-cache ${NOMINATIM_SETUP_CACHE} 2>&1 | logger -t nominatim-setup
 
-if [ "${SPECIALPHRASES_COUNTRIES}" != 'false' ]; then
+if [[ "$SPECIALPHRASES_COUNTRIES" != 'false' ]]; then
 	SQL_FILENAME=`gosu nominatim mktemp`
-	gosu nominatim /home/nominatim/Nominatim-${NOMINATIM_VERSION}/utils/specialphrases.php --countries > ${SQL_FILENAME}
+	gosu nominatim /var/nominatim/utils/specialphrases.php --countries > ${SQL_FILENAME}
 	gosu nominatim psql -d nominatim -f ${SQL_FILENAME}
 	rm ${SQL_FILENAME}
 fi
 
-if [ "${SPECIALPHRASES_WIKI}" != 'false' ]; then
+if [[ "$SPECIALPHRASES_WIKI" != 'false' ]]; then
 	SQL_FILENAME=`gosu nominatim mktemp`
-	gosu nominatim /home/nominatim/Nominatim-${NOMINATIM_VERSION}/utils/specialphrases.php --wiki-import > ${SQL_FILENAME}
+	gosu nominatim /var/nominatim/utils/specialphrases.php --wiki-import > ${SQL_FILENAME}
 	gosu nominatim psql -d nominatim -f ${SQL_FILENAME}
 	rm ${SQL_FILENAME}
 fi
 
 mkdir -m 755 /var/www/nominatim
 chown www-data:www-data /var/www/nominatim
-gosu www-data /home/nominatim/Nominatim-${NOMINATIM_VERSION}/utils/setup.php --create-website /var/www/nominatim
+gosu www-data /var/nominatim/utils/setup.php --create-website /var/www/nominatim
 
-if [ "${NGINX_HTTP}" == "true" ]; then
+if [[ "$NGINX_HTTP" == "true" ]]; then
 	ln -s /etc/nginx/sites-available/nominatim.conf /etc/nginx/sites-enabled/nominatim.conf
 else
 	if [ -f /etc/nginx/sites-enabled/nominatim.conf ]; then
@@ -42,7 +42,7 @@ else
 	fi
 fi
 
-if [ "${NGINX_HTTPS}" == "true" ]; then
+if [[ "$NGINX_HTTPS" == "true" ]]; then
 	ln -s /etc/nginx/sites-available/nominatim-ssl.conf /etc/nginx/sites-enabled/nominatim-ssl.conf
 else
 	if [ -f /etc/nginx/sites-enabled/nominatim-ssl.conf ]; then

@@ -24,6 +24,12 @@ apt-get update
 ## Upgrade all packages.
 apt-get dist-upgrade -y --no-install-recommends
 
-chmod +x /build/bin/*
-chmod +x /build/runit/*
+if [ -d /build/runit ]; then
+	chmod +x /build/runit/*
+fi
+
+if [ -d /build/bin ]; then
+	chmod +x /build/bin/*
+fi
+
 chmod +x /build/*.sh

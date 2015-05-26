@@ -23,7 +23,7 @@ RUN /build/prepare.sh && \
 	/build/services.sh && \
 	/build/cleanup.sh
 
-VOLUME ["/etc/nginx", "/var/www", "/home/nominatim"]
+VOLUME ["/etc/nginx", "/var/www", "/var/nominatim"]
 
 EXPOSE 80 443
 

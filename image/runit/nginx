@@ -13,9 +13,9 @@ if [[ -z "$DB_EXISTS" || "$DB_EXISTS" == "0" ]]; then
 	$env = json_decode(file_get_contents('/etc/container_environment.json'));
 	@define('CONST_Debug', (bool) $env->NOMINATIM_DEBUG);
 	@define('CONST_Database_DSN', 'pgsql://'.$env->PGUSER.'@'.$env->PGHOST.'/nominatim');
-	@define('CONST_Postgresql_Version', $env->PG_MAJOR);
+	@define('CONST_Postgresql_Version', $env->POSTGRES_VERSION);
 	@define('CONST_Postgis_Version', $env->POSTGIS_VERSION);
-	@define('CONST_Website_BaseURL', 'http://'.$env->NOMINATIM_WEBSITE_DOMAIN);
+	@define('CONST_Website_BaseURL', 'http://'.$env->NOMINATIM_DOMAIN);
 	EOF
 
 	nominatim-setup

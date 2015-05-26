@@ -17,7 +17,7 @@ $minimal_apt_get_install \
 	libboost-dev libboost-system-dev libboost-filesystem-dev libboost-thread-dev \
 	gcc proj-bin libgeos-c1 libgeos++-dev \
 	php5-fpm php5 php-pear php5-pgsql php5-json php-db \
-	postgresql-client-${PG_MAJOR} postgresql-server-dev-${PG_MAJOR} \
+	postgresql-client-${POSTGRES_VERSION} postgresql-server-dev-${POSTGRES_VERSION} \
 	libprotobuf-c0-dev protobuf-c-compiler
 
 # Creating nominatim user

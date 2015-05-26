@@ -18,11 +18,11 @@ $minimal_apt_get_install \
 	gcc proj-bin libgeos-c1 libgeos++-dev \
 	php5-fpm php5 php-pear php5-pgsql php5-json php-db \
 	postgresql-client-${POSTGRES_VERSION} postgresql-server-dev-${POSTGRES_VERSION} \
-	libprotobuf-c0-dev protobuf-c-compiler
+	libprotobuf-c0-dev protobuf-c-compiler \
+	wget osmctools
 
 # Creating nominatim user
-groupadd nominatim && useradd -g nominatim nominatim
-mkdir /var/nominatim
+groupadd nominatim && useradd -g nominatim nominatim -d /var/nominatim
 
 ## Downloading and extracting Nominatim
 curl -O -SL "http://www.nominatim.org/release/Nominatim-${NOMINATIM_VERSION}.tar.bz2"
@@ -34,9 +34,6 @@ cd /var/nominatim
 gosu nominatim ./configure
 gosu nominatim make
 cd $HOME
-
-## Installing osmconverter, osmupdate and osmfilter
-$minimal_apt_get_install wget osmctools
 
 ## Copy the binaries
 cp /build/bin/* /usr/local/bin/

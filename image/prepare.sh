@@ -10,14 +10,6 @@ fi
 
 export INITRD=no
 
-# Adding oracle JDK from Ubuntu Repositories
-echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" >> /etc/apt/sources.list
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
-# Accepting Oracle JDK License
-cat <<-EOF | debconf-set-selections
-debconf shared/accepted-oracle-license-v1-1 select true
-EOF
-
 # Update repos
 apt-get update
 
